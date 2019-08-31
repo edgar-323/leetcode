@@ -1,0 +1,49 @@
+#include "bostree.h"
+#include <iostream>
+#include <vector>
+
+static const auto cmp = [] (const void* _a, const void* _b) -> int {
+        int a = *((int*) _a); 
+        int b = *((int*) _b);
+        return (a == b) ? 0 : ((a < b) ? -1 : 1);
+    };
+class FastTree {
+private:
+    BOSTree* tree;
+    std::vector<int> elems;
+public:
+    FastTree() {
+        tree = bostree_new( cmp, NULL );
+    }    
+
+    void insert(int a) {
+        elems.push_back( a );
+        bostree_insert( tree, &elems[elems.size()-1], NULL ); 
+        assert( elems.size() == bostree_node_count( tree ) );
+    }
+
+    double median() {
+        const size_t N = elems.size();
+        assert( N > 0 );
+        if (N % 2 == 0) {
+           int a = *((int*) (bostree_select( tree, N/2-1 )->key));
+           int b = *((int*) (bostree_select( tree, N/2 )->key));
+           return double(a + b) / 2.0;
+        } else {
+            int mid = *((int*) (bostree_select( tree, N/2 )->key));
+            return double( mid );
+        }
+    }
+};
+
+int main(int _, char**__) {
+    
+    int a = 55;
+    int b = -21;
+    std::cout << "cmp( " << a << ", " << b 
+        << " ) = " << cmp( &a, &b ) << std::endl;
+
+    std::cout << "Hello World!" << std::endl;
+    
+    return 0;
+}
