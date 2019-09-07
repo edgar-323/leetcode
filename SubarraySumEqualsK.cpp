@@ -42,10 +42,9 @@ private:
     }
     /*****************************************************************************************/
     int solution2(std::vector<int>& nums, const int k) {
-        /*
-        Time-Complexity:    O()
-        Space-Complexity:   O()
-        */
+        /* Time-Complexity:    O( N )
+         * Space-Complexity:   O( N )
+         * */
         const int N = nums.size();
         if (N == 0) {
             return 0;
