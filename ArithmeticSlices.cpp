@@ -27,7 +27,7 @@ return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] i
 
 class Solution {
 private:
-    bool is_arithmetic_sqn2(const std::vector<int>& A, const int N, int& end) { 
+    bool is_arithmetic_sqn1(const std::vector<int>& A, const int N, int& end) { 
         // Assumes end <= N-3
         if (A[end] - A[end+1] != A[end+1] - A[end+2]) {
             return false;
@@ -51,7 +51,7 @@ private:
         const int N = A.size();
         for (int i = 0; i < N-2;) {
             int end = i;
-            if (is_arithmetic_sqn2( A, N, end )) {
+            if (is_arithmetic_sqn1( A, N, end )) {
                 results += compute_k_value2( end-i + 1 );
                 i = end;
             } else {

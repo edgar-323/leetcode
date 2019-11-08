@@ -1,0 +1,60 @@
+CheapestFlightsWithinKStops.cpp:40:19: error: use of undeclared identifier 'std'
+            const std::vector<std::vector<int>>& flights, 
+                  ^
+CheapestFlightsWithinKStops.cpp:40:31: error: use of undeclared identifier 'std'
+            const std::vector<std::vector<int>>& flights, 
+                              ^
+CheapestFlightsWithinKStops.cpp:40:46: error: expected '(' for function-style cast or type construction
+            const std::vector<std::vector<int>>& flights, 
+                                          ~~~^
+CheapestFlightsWithinKStops.cpp:102:34: error: use of undeclared identifier 'std'
+    int findCheapestPrice(int n, std::vector<std::vector<int>>& flights, int src, int dst, int K) {
+                                 ^
+CheapestFlightsWithinKStops.cpp:102:46: error: use of undeclared identifier 'std'
+    int findCheapestPrice(int n, std::vector<std::vector<int>>& flights, int src, int dst, int K) {
+                                             ^
+CheapestFlightsWithinKStops.cpp:102:61: error: expected '(' for function-style cast or type construction
+    int findCheapestPrice(int n, std::vector<std::vector<int>>& flights, int src, int dst, int K) {
+                                                         ~~~^
+CheapestFlightsWithinKStops.cpp:67:23: error: use of undeclared identifier 'flights'
+        const int E = flights.size();
+                      ^
+CheapestFlightsWithinKStops.cpp:69:30: error: use of undeclared identifier 'std'
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                             ^
+CheapestFlightsWithinKStops.cpp:69:42: error: use of undeclared identifier 'std'
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                         ^
+CheapestFlightsWithinKStops.cpp:69:54: error: use of undeclared identifier 'std'
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                                     ^
+CheapestFlightsWithinKStops.cpp:69:67: error: expected '(' for function-style cast or type construction
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                                               ~~~^
+CheapestFlightsWithinKStops.cpp:69:69: error: expected unqualified-id
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                                                    ^
+CheapestFlightsWithinKStops.cpp:69:68: error: expected ';' at end of declaration
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                                                   ^
+                                                                   ;
+CheapestFlightsWithinKStops.cpp:69:72: error: expected unqualified-id
+        auto incomingEdges = std::vector<std::vector<std::pair<int, int>>>(V);
+                                                                       ^
+CheapestFlightsWithinKStops.cpp:71:27: error: use of undeclared identifier 'flights'
+            const int N = flights[u].size();
+                          ^
+CheapestFlightsWithinKStops.cpp:73:44: error: use of undeclared identifier 'std'
+                incomingEdges[v].push_back(std::make_pair(u, flights[u][v]));
+                                           ^
+CheapestFlightsWithinKStops.cpp:73:62: error: use of undeclared identifier 'flights'
+                incomingEdges[v].push_back(std::make_pair(u, flights[u][v]));
+                                                             ^
+CheapestFlightsWithinKStops.cpp:77:19: error: use of undeclared identifier 'std'
+        auto DP = std::vector<std::vector<int>>(V, std::vector<int>(K+1, -1));
+                  ^
+CheapestFlightsWithinKStops.cpp:77:31: error: use of undeclared identifier 'std'
+        auto DP = std::vector<std::vector<int>>(V, std::vector<int>(K+1, -1));
+                              ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.

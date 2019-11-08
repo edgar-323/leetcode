@@ -61,8 +61,8 @@ private:
         Time-Complexity:    O(S*N)
         Space-Complexity:   O(S*N)
         Where:
-            N = size(nums)
-            S = sum(nums)
+            N = size(V)
+            S = ∑ { V[i] | i € [0, N) }
         */
         /* EXPLANATION:
          * We are looking for the existence subsets `A` and `B` s.t.:
@@ -73,7 +73,7 @@ private:
          *
          * Assume that `A` and `B` exist.
          * Let
-         *      S = SUM{V}
+         *      S = ∑ { V[i] | i € [0, N) }
          * Then (since `A` and `B` are disjoint)
          *      S = SUM{V} = SUM{UNION{A,B}} = SUM{A} + SUM{B} = k + k = 2*k
          * So
@@ -85,14 +85,14 @@ private:
          * Furthemore, we see that
          *      k = S/2
          * So our second condition must that we can find a subset `C` of `V` s.t.:
-         *      SUM{C} = S/2
+         *      ∑ {c | c € C} == S/2
          * I.e., does their exist a subset of `V` that sums up to `S/2`?
          * We can leverage `0/1 Knapsack Problem` with `W = S/2` and see if such a subset exists by ensuring that its return value is `S/2`.
          * 
          * In conclusion, the required conditions are:
          *      1) S is of even parity
          *      2) There exists a subset `C` of `V` s.t.:
-         *              SUM{C} = S/2 
+         *              ∑ {c | c € C} == S/2
          * */
         int S = sum(V);
         return (S & 1) ? false :

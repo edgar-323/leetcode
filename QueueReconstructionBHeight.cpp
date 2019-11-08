@@ -12,6 +12,8 @@ Input:
 Output:
 [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
 */
+#include <iostream>
+#include <vector>
 
 class Solution {
 private:
@@ -52,3 +54,9 @@ public:
         return solution1( people );            
     }
 };
+
+int main() {
+    Solution sol;
+    std::cout << "HELLO WORLD" << std::endl;
+    return EXIT_SUCCESS;
+}

@@ -44,8 +44,8 @@ private:
     
   	int n;
     LL ans;
-    void dfs(int dep, std::vector<int>& A, std::vector<LL> cur) {
-        if (dep == n) {
+    void dfs(int depth, std::vector<int>& A, std::vector<LL> cur) {
+        if (depth == n) {
             if (cur.size() < 3) {
                 return;
             }
@@ -57,17 +57,18 @@ private:
             ans ++;
             return;
         }
-        dfs(dep + 1, A, cur);
-        cur.push_back(A[dep]);
-        dfs(dep + 1, A, cur);
+        dfs(depth + 1, A, cur);
+        cur.push_back(A[depth]);
+        dfs(depth + 1, A, cur);
     }
+
     int solution1(std::vector<int>& A) {
         n = A.size();
         ans = 0;
         std::vector<LL> cur;
         dfs(0, A, cur);
         return int( ans );
-    }  
+    }
 
     int solution2(vector<int>& A) {
         n = A.size();
