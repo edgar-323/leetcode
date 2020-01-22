@@ -19,6 +19,8 @@ class Solution {
 private:
     typedef std::vector<int> Person;
     typedef std::vector<Person> Queue;
+    static const int HEIGHT = 0;
+    static const int TALLER_PPL = 1;
 
     Queue solution1(Queue& Q) {
         /* Time-Complexity:     O( N^2 )
@@ -27,13 +29,12 @@ private:
         const size_t N = Q.size();
         // First Sort by Heights:
         std::sort(Q.begin(), Q.end(), 
-                [] // No need to capture any variables
-                (const Person& p1, const Person& p2) {
-                    // Remember pi[0] is height and pi[1] is # ppl in front of person i whose height is >= height of person i.
+                [] (const Person& p1, const Person& p2) -> bool
+                {
                     // If two persons have same height, the one who sees less ppl in front of them must come before. 
-                    return p1[0] == p2[0] ? // same height?
-                             p1[1] <= p2[1] : // then p1 < p2 if p1 sees less ppl
-                             p1[0] > p2[0];  // else, p1 < p2 if p1 is taller than p2 -> we want tall ppl in front (for now).
+                    return  p1[HEIGHT] == p2[HEIGHT] ? // same height?
+                            p1[TALLER_PPL] < p2[TALLER_PPL]: // then p1 < p2 if p1 sees less ppl
+                            p1[HEIGHT] > p2[HEIGHT];  // else, p1 < p2 if p1 is taller than p2 -> we want tall ppl in front (for now).
                 }
         );
         // At this point, everybody is sorted within their heights.
@@ -42,7 +43,7 @@ private:
         for (size_t i = 1; i < N; ++i) {
             // Lets see how forward we can bring person i:
             // If # of ppl reported to be seen by person i is < its current positon, then we keep bringing him forward one step at a time
-            for (size_t j = i; j and Q[j][1] < j; --j) {
+            for (size_t j = i; j and Q[j][TALLER_PPL] < j; --j) {
                 std::swap( Q[j-1], Q[j] );
             }
         }

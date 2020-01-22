@@ -140,7 +140,7 @@ public:
     }
     
     int getMax() {
-        return popper->empty() ? pusher->getMax() : 
+        return  popper->empty() ? pusher->getMax() : 
                 pusher->empty() ? popper->getMax() : 
                 max(pusher->getMax(), popper->getMax());
     }

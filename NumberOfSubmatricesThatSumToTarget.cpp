@@ -22,31 +22,33 @@ Note:
 
 class Solution {
 private:
-	int solution1(const std::vector<std::vector<int>>& matrix, const int target) {
+	int solution1(std::vector<std::vector<int>>& matrix, const int target) {
         /* Time-Complexity:     O(M*N^2)
          * Space-Complexity:    O(M*N)
          */
 
 	    int num_submatrices = 0;
 
-        auto A = matrix;
         const int M = A.size();
         const int N = A[0].size();
         
-        for (int i = 0; i < M; ++i) {
-            for (int j = 1; j < N; ++j) {
-                A[i][j] += A[i][j-1];
+        for (int row = 0; row < M; ++row) {
+            for (int col = 1; col < N; ++col) {
+                matrix[row][col] += matrix[row][col-1];
             }
         }
-        for (int i = 0; i < N; ++i) {
-            for (int j = i; j < N; ++j) {
+
+        for (int col1 = 0; col1 < N; ++col1) {
+            for (int col2 = col1; col2 < N; ++col2) {
                 auto map = std::unordered_map<int,int>();
-                map.insert({0, 1});
+                map[0] = 1;
                 int running_sum = 0;
-                for (int r = 0; r < M; ++r) {
-                    running_sum += A[r][j] - (i ? A[r][i-1] : 0);
-                    num_submatrices += map[running_sum - target];
-                    map[running_sum]++;
+                for (int row = 0; row < M; ++row) {
+                    running_sum += matrix[row][col2] - (col1 ? matrix[row][col1 - 1] : 0);
+                    if (map.count(running_sum - target)) {
+                        running_sum += map[running_sum - target];
+                    }
+                    ++map[running_sum];
                 }
             }
         }

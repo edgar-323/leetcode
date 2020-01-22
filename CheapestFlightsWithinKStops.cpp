@@ -106,7 +106,7 @@ private:
         return shortest_path;
 	}
     /************************************************************************************************/
-    typedef struct { int to, length; } Edge;
+    typedef std::tuple<int,int,int> Node;
 
     int solution2(
             const int V,
@@ -118,49 +118,45 @@ private:
          * Space-Complexity:    O()
          * */
         // DIJKSTRA'S ALGORITHM
+        // Some explanation.
+        // The key difference with the classic Dijkstra algo is, we don't maintain the global optimal distance to each node, i.e. ignore below optimization:
+        // alt ← dist[u] + length(u, v)
+        // if alt < dist[v]:
+        // Because there could be routes which their length is shorter but pass more stops, and those routes don't necessarily constitute the best route in the end. 
+        // To deal with this, rather than maintain the optimal routes with 0..K stops for each node, the solution simply put all possible routes into the priority queue, 
+        // so that all of them has a chance to be processed. IMO, this is the most brilliant part.
+        // And the solution simply returns the first qualified route, it's easy to prove this must be the best route.
+        //
+        //
         
         // Adjacency List
-        auto graph = std::vector<std::vector<Edge>>(V);
+        auto graph = std::vector<std::vector<std::pair<int,int>>>(V);
         for (const auto& flight : flights) {
             const int u = flight[0];
             const int v = flight[1];
             const int d = flight[2];
-            Edge edge;
-            edge.to = v;
-            edge.length = d;
-            graph[u].push_back(edge);
-        }
-        
-        auto dist = std::vector<int>(V, INT_MAX);
-        auto hops = std::vector<int>(V, 0); 
-        dist[src] = 0;
-        
-        std::set<std::pair<int,int>> active_nodes;
-        active_nodes.insert( {0, src} );
-        
-        while (not active_nodes.empty()) {
-            const int u = active_nodes.begin()->second;
-            if (u == dst) {
-                return dist[u];
-            }
-            active_nodes.erase(active_nodes.begin());
-            if (hops[u] >= K) {
-                continue;
-            }
-            for (const auto& edge : graph[u]) {
-                const int v = edge.to;
-                const int d = edge.length;
-                if (dist[v] > dist[u] + d) {
-                    active_nodes.erase({dist[v], v});
-                    dist[v] = dist[u] + d;
-                    hops[v] = hops[u] + 1;
-                    active_nodes.insert({dist[v], v});
-                } else if (dist[v] < INT_MAX and dist[v] == dist[u] + d) {
-                    hops[v] = std::min(hops[v], hops[u] + 1);
-                }
-            }
+            graph[u].push_back({ v, d });
         }
 
+        auto PQ = std::priority_queue<Node, std::vector<Node>, std::greater<Node>>();
+        PQ.push(std::make_tuple(0, src, K));
+
+        while (not PQ.empty()) {
+            const auto [cost, u, k] = PQ.top();
+            PQ.pop();
+            
+            if (u == dst) {
+                return cost;
+            }
+            if (not k) {
+                continue;
+            }
+            for (const auto& to : graph[u]) {
+                const auto [v, w] = to;
+                PQ.push(std::make_tuple(cost + w, v, k-1));
+            }
+        }
+        
         return INF;
     }
     /************************************************************************************************/

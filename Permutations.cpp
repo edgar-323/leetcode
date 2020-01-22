@@ -19,27 +19,28 @@ private:
     int N;
 
     void recurse1(
-            std::vector<std::vector<int>>& permutations, 
-            std::vector<int>& nums, 
-            const int pos) {
-        if (pos >= N) {
-            // We have produced a permutation
-            permutations.push_back(nums);   
+            const int i,
+            std::vector<int>& nums,
+            std::vector<std::vector<int>>& results) {
+        if (i == N) {
+            // we've produced a permutation
+            results.push_back(nums);
         }
-        // We will swap nums[pos] with all values in nums[pos:N)
-        // And we will produce permutations in this manner.
-        for (int i = pos; i < N; ++i) {
-            std::swap(nums[pos], nums[i]);
-            recurse1(permutations, nums, pos+1);
-            std::swap(nums[pos], nums[i]);
+        // For j € {i,...,N-1}, swap nums[i] with nums[j] and recurse on nums[i+1:N]
+        // I.e., produces permuations where ith number switches with jth number
+        for (int j = i; j < N; ++j) {
+            std::swap(nums[i], nums[j]);
+            recurse1(i+1, nums, results);
+            std::swap(nums[i], nums[j]);
         }
     }
     
     std::vector<std::vector<int>> solution1(std::vector<int>& nums) {
         N = nums.size();
-        std::vector<std::vector<int>> permutations;
-        recurse1(permutations, nums, 0);
-        return permutations;
+        auto results = std::vector<std::vector<int>>();
+        recurse1(0, nums, results);
+
+        return results;
     }
     
 public:
@@ -47,3 +48,4 @@ public:
         return solution1(nums);
     }
 };
+

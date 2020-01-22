@@ -233,10 +233,12 @@ private:
         auto seven_day_index    = indices[1];
         auto thirty_day_index   = indices[2]; 
 
-        return cache4[index]    = std::min(std::min(
-                                    recurse4( days, one_day_index )     + one_day_cost,
-                                    recurse4( days, seven_day_index )   + seven_day_cost ),
-                                    recurse4( days, thirty_day_index )  + thirty_day_cost );
+        return cache4[index] =  std::min<int>(
+                                        {
+                                            recurse4(days, one_day_index)       + one_day_cost,
+                                            recurse4(days, seven_day_index)     + seven_day_cost,
+                                            recurse4(days, thirty_day_index)    + thirty_day_cost
+                                        });
 	}
 
     int solution4(const std::vector<int>& days, const std::vector<int>& costs) {

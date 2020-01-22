@@ -11,11 +11,11 @@ Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefor
 class Solution {
 private:
     void dfs(int num, std::unordered_map<int, int>& seen) {
-        if (seen.count(num) == 0 || seen.at(num) > 1) {
+        if (not seen.count(num) or seen.count(num) > 1) {
             return;
         } 
         dfs(num+1, seen);
-        seen.at(num) += ((seen.count(num+1) > 0) ? seen.at(num+1) : 0);
+        seen[num] += seen.count(num+1) ? seen[num+1]: 0;
     }
     
     int solution1(vector<int>& nums) {
@@ -23,13 +23,11 @@ private:
         const int N = nums.size();
         std::unordered_map<int, int> seen;
         for (auto& num : nums) {
-            if (seen.count(num) == 0) {
-                seen.emplace(num, 1);
-            }
+            seen[num] = 1;
         }
-        for (auto& pair : seen) {
-            dfs(pair.first, seen);
-            maxSeq = max(maxSeq, seen.at(pair.first));
+        for (auto& v : seen) {
+            dfs(v.first, seen);
+            maxSeq = max(maxSeq, seen.at(v.first));
         }
         return maxSeq;
     }

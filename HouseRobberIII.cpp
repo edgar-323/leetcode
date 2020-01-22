@@ -126,13 +126,11 @@ private:
             return includedParent ? p.includedParent : p.excludedParent;
         } else {
             int val = includedParent ? 
-                    (recurse3(node->left, false) + 
-                     recurse3(node->right, false)) :
-                    max(recurse3(node->left, false) + 
-                       recurse3(node->right, false), 
-                      node->val + 
-                       recurse3(node->left, true) + 
-                       recurse3(node->right, true));
+                    recurse3(node->left, false) + recurse3(node->right, false) :
+                    max(
+                            recurse3(node->left, false) + recurse3(node->right, false), 
+                            recurse3(node->left, true) + recurse3(node->right, true) + node->val
+                        );
             memo.emplace(node, Pair(val, includedParent));
             return val;
         }

@@ -108,25 +108,39 @@ private:
     }
 
     int solution3(const std::vector<std::vector<int>>& grid) {
-        /* Time-Complexity:     O( )
-         * Space-Complexity:    O( )
+        /* Time-Complexity:     O( M * N^2 )
+         * Space-Complexity:    O( N^2 )
          *
          * */
 
-        const int M = grid.size();
-        const int N = M ? grid[0].size() : 0;
-        if (!M or !N) {
+        if (grid.empty()) {
             return 0;
         }
 
+        const int M = grid.size();
+        const int N = grid[0].size();
+
         int rectangles = 0;
         
+        auto count = std::vector<std::vector<int>>(N, std::vector<int>(N, 0)); 
+        for (const auto& row : grid) {
+            for (int left = 0; left < N; ++left) {
+                if (row[left]) {
+                    for (int right = left+1; right < N; ++right) {
+                        if (row[right]) {
+                            rectangles += count[left][right];
+                            ++count[left][right];
+                        }
+                    }
+                }
+            }
+        }
         
 
         return rectangles;
     }
 public:
     int countCornerRectangles(vector<vector<int>>& grid) {
-        return solution2( grid );     
+        return solution3( grid );
     }
 };

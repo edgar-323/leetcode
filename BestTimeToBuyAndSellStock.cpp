@@ -22,6 +22,12 @@ private:
          * Time-Complexity:    O( N )
          * Space-Complexity:   O( 1 )
          * */
+        /* Explanation:
+         * For every price prices[i], maintain maximum value in prices[i+1:N), 
+         * so that the max profit we can make if we decide to buy on day i is:
+         *  max_value(prices[i+1:N]) - prices[i]
+         * We check what is the best day to buy and return maximum profit this way.
+         */
         const int N = prices.size();
         // Our return value (which we will iteritavely maximize):
         int maxProfit = 0;

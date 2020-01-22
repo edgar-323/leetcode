@@ -96,17 +96,16 @@ private:
         int maxSide = 0;
         auto DP = std::vector<std::vector<int>>(M, std::vector<int>(N, 0));
         for (int i = 0; i < M; ++i) {
-            DP[i][0] = (matrix[i][0] == '1') ? 1 : 0;
+            DP[i][0] = (matrix[i][0] == '1');
             maxSide = max(maxSide, DP[i][0]);
         }
         for (int j = 1; j < N; ++j) {
-            DP[0][j] = (matrix[0][j] == '1') ? 1 : 0;
+            DP[0][j] = (matrix[0][j] == '1');
             maxSide = max(maxSide, DP[0][j]);
         }
         for (int i = 1; i < M; ++i) {
             for (int j = 1; j < N; ++j) {
-                DP[i][j] = ((matrix[i][j] == '1') ? 1 : 0) * 
-                            (min(DP[i-1][j-1], DP[i][j-1], DP[i-1][j]) + 1);
+                DP[i][j] = (matrix[i][j] == '1') * (std::min<int>({ DP[i-1][j-1], DP[i][j-1], DP[i-1][j] }) + 1);
                 maxSide = max(maxSide, DP[i][j]);
             }
         }

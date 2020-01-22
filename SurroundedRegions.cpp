@@ -28,21 +28,21 @@ private:
     static const char O = 'O';
     static const char P = 'P'; // In-Progress
     static const char I = 'I'; // Invalid
-    bool isValid(int i, int j) {
+    bool valid(int i, int j) {
         return i >= 0 and i < M and j >= 0 and j < N;
     }
     bool explore(std::vector<std::vector<char> >& board, int i, int j) {
-        if (!isValid(i, j) or board[i][j] == I) {
+        if (not valid(i, j) or board[i][j] == I) {
             return false;
         } else if (board[i][j] == X or board[i][j] == P) {
             return true;
         }
         
         board[i][j] = P;
-        if (!explore(board, i-1, j) or
-            !explore(board, i+1, j) or 
-            !explore(board, i, j+1) or 
-            !explore(board, i, j-1)) {
+        if (not explore(board, i-1, j) or
+            not explore(board, i+1, j) or 
+            not explore(board, i, j+1) or 
+            not explore(board, i, j-1)) {
             board[i][j] = I;
             return false;
         } else {
@@ -50,7 +50,7 @@ private:
         }
     }
     void revert(std::vector<std::vector<char> >& board, int i, int j) {
-        if (!isValid(i, j) or board[i][j] == X or board[i][j] == O) {
+        if (not valid(i, j) or board[i][j] == X or board[i][j] == O) {
             return;
         }
         board[i][j] = O;

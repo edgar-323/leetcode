@@ -94,10 +94,10 @@ private:
         Time-Complexity:    O(N)
         Space-Complexity:   O(N)
         */
-        N = prices.size();
-        if (N == 0) {
+        if (prices.empty()) {
             return 0;
         }
+        N = prices.size();
         // recall states. 
         int s0[N];
         int s1[N];

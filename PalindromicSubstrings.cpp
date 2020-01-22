@@ -109,8 +109,7 @@ private:
         int* P = manacher_algorithm(str);
         int count = 0;
         for (int i = 1; i < N-1; ++i) {
-            count += P[i] / 2;
-            count += (S[i] != '#') ? 1 : 0;
+            count += P[i] / 2 + (S[i] != '#');
         }
         delete[] P;
         return count;

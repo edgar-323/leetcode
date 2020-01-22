@@ -91,7 +91,7 @@ class Solution {
         //  Check if choice is available (i.e., not chosen yet)
         //      If so, check whether choosing it yields SUCCESS.
         for (int choice = 1; choice <= maxChoosableInteger; ++choice) {
-            if (choice_yields_success( choices, currentTotal, choice )) {    
+            if (choice_yields_success( choices, currentTotal, choice )) {
                 return set_cache_value( choices, SUCCESS );
             }
         }
@@ -108,14 +108,14 @@ class Solution {
         // ASSUMES:
         // 1 <= maxChoosableInteger <= MAX_CHOOSABLE_INT
         // CREDITS:
-        // Credit for this solutoion goes to leetcoder: zzg_zzm
-        
-        // If desiredTotal <= 1, then player1 can choose any value 
+        // Credit for this solution goes to leetcoder: @zzg_zzm
+        //
+        // If desiredTotal <= 1, then player1 can choose any value
         // in {1,...,maxChoosableInteger} and win.
         if (desiredTotal <= 1) {
             return true;
         }
-        // maxSum = ∑ { i | i € [1,..,maxChoosableInteger] }
+        // maxSum = ∑ { i | i € {1,..,maxChoosableInteger} }
         const int maxSum = maxChoosableInteger * (maxChoosableInteger + 1) / 2;
         if (desiredTotal > maxSum) {
             // No way either player can ever reach `desiredTotal`
@@ -125,7 +125,7 @@ class Solution {
             // We have to figure out who is last player:
             //  If `maxChoosableInteger` is EVEN, the player2 will be last player
             //  otherwise (if `maxChoosableInteger` is ODD), player1 will be last player.
-            // Thus, player1 wins if `maxChoosableInteger` is ODD. 
+            // Thus, player1 wins if `maxChoosableInteger` is ODD.
             return maxChoosableInteger & 1;
         }
         

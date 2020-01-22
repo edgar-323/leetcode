@@ -23,13 +23,13 @@ All characters inside a pair of consecutive opening and ending curly brackets ar
 class Solution {
 private:
     size_t get_collections(const std::string& s, size_t i, std::vector<std::string>& results) {
-        std::vector<std::vector<std::string>> collections;
+        auto collections = std::vector<std::vector<std::string>>();
         while (s[i] != '}') {
             if (s[i] != ',') {
                 // must be letter
-                std::vector<std::string> collection( results );
+                auto collection = results;
                 for (auto& str : collection) {
-                    str += std::string( 1, s[i] );
+                    str += s[i];
                 }
                 collections.push_back( collection );
             }
@@ -43,12 +43,13 @@ private:
         }
         return i;
     }
+
 	std::vector<std::string> solution1(const std::string& s) {
-        std::vector<std::string> results;
-        const size_t N = s.size();
-        if ( !N ) {
-            return results;
+        if (s.empty()) {
+            return {};
         }
+        auto results = std::vector<std::string>();
+        const size_t N = s.size();
 
         results.push_back( "" );
 
@@ -57,7 +58,7 @@ private:
                 i = get_collections( s, i+1, results );
             } else if (s[i] != ',') {
                 for (auto& str : results) {
-                    str += std::string(1, s[i]);
+                    str += s[i];
                 }
             }
         }

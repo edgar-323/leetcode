@@ -61,14 +61,9 @@ private:
             // if (runningSum - k) is in `map`, it means that there exists a subarray at some
             // earlier index s.t. the sum of elements from that index to `i` sum up to k.
             if (map.count(runningSum - k)) {
-                ctsSubArrays += map.at(runningSum - k);
+                ctsSubArrays += map[runningSum - k];
             }
-            auto it = map.find(runningSum);
-            if (it != map.end()) {
-                ++(it->second);
-            } else {
-                map.insert( std::make_pair( runningSum, 1 ) );
-            }
+            map[runningSum]++;
         }
         
         return ctsSubArrays;

@@ -54,7 +54,7 @@ private:
             return cache1[i][j][k];
         }
         bool interleaved;
-        if (i == M+N) {
+        if (k == M+N) {
             interleaved =   i == M and 
                             j == N;
         } else if (i == M) {

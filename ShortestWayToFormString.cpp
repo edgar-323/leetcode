@@ -1,6 +1,7 @@
 /*
 From any string, we can form a subsequence of that string by deleting some number of characters (possibly no deletions).
-Given two strings source and target, return the minimum number of subsequences of source such that their concatenation equals target. If the task is impossible, return -1.
+Given two strings source and target, return the minimum number of subsequences of source such that their concatenation equals target.
+If the task is impossible, return -1.
 
 Example 1:
 Input: source = "abc", target = "abcbc"
@@ -54,6 +55,16 @@ private:
                     map[i][j] = pre;
                 } else {
                     pre = map[i][j];
+                }
+            }
+        }
+
+        for (int c = 0; c < ALPH_SZ; ++c) {
+            for (int i = M-1, pre = 0; i >= 0; --i) {
+                if (not map[c][i]) {
+                    map[c][i] = pre;
+                } else {
+                    pre = map[c][i];
                 }
             }
         }
@@ -180,7 +191,7 @@ private:
     }
     /************************************************************************************************************/
     int recurse1(const std::string& src, const std::string& target, const size_t k) {
-        // so far, we have found target[0:0), we need to complete the rest.
+        // so far, we have found target[0:k), we need to complete the rest.
         const size_t N = target.size();
         size_t j = k;
         if (j >= N) {
@@ -209,11 +220,11 @@ private:
         }
         // success
         return 1 + next;
-    } 
+    }
 	int solution1(const std::string& src, const std::string& target) {
 	    /* Time-Complexity:     O( M*N )
          * Space-Complexity:    O(  M  )
-         *  where M = size( M ) and N = size( target )
+         *  where M = size( src ) and N = size( target )
          * */
         return recurse1(src, target, 0);	
 	}

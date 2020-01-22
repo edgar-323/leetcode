@@ -31,42 +31,52 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
 class Solution {
     static const int ALPH_SZ = 26;
 
+    char to_char(const int j) {
+        return 'a' + j;
+    }
+
     int solution1(
-            const std::string& beginWord,
-            const std::string& endWord, 
-            const std::vector<std::string>& wordList) {
-        const int N = endWord.size();
-        std::unordered_set<std::string> dictionary(
-                                            wordList.begin(), 
-                                            wordList.end());
-        std::unordered_set<std::string> seen;
+            const std::string& begin_word,
+            const std::string& end_word,
+            const std::vector<std::string>& word_list) {
+        /* Time-Complexity:     O(ALPH_SZ*K*N)
+         * Space-Complexity:    O(K*N)
+         *      Where:
+         *          N = # of words
+         *          K = size of each word
+         */
+        const int K = end_word.size();
+        const auto dictionary = std::unordered_set<std::string>(
+                                        word_list.begin(), 
+                                        word_list.end());
         
-        int minTransforms = 1;
+        auto seen = std::unordered_set<std::string>();
         std::queue<std::string> Q;
         Q.push(beginWord);
 
-        while (!Q.empty()) {
-            for (size_t size = Q.size(); size > 0; --size) {
-                const std::string curr = Q.front(); Q.pop();
-                if (curr == endWord) {
-                    return minTransforms;
+        int min_transformations = 1;
+
+        while (not Q.empty()) {
+            for (size_t size = Q.size(); size; --size, Q.pop()) {
+                auto word = Q.front();
+                if (word == end_word) {
+                    return min_transformations;
                 }
-                for (int i = 0; i < N; ++i) {
+                for (int i = 0; i < K; ++i) {
+                    const char c = word[i];
                     for (int j = 0; j < ALPH_SZ; ++j) {
-                        const char c = char(int('a') + j);
-                        const std::string s =   curr.substr(0, i) + 
-                                                std::string(1, c) + 
-                                                curr.substr(i+1);
-                        if (!seen.count(s) and dictionary.count(s)) {
-                            Q.push(s);
-                            seen.insert(s);
+                        word[i] = to_char(j);
+                        if (dictionary.count(word) and not seen.count(word)) {
+                            Q.push(next);
+                            seen.insert(next);
                         }
                     }
+                    word[i] = c;
                 }
             }
-            ++minTransforms;
+            ++min_transformations;
         }
-        
+        // no transformation is possible
         return 0;
     }
 public:

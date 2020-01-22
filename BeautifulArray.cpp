@@ -75,8 +75,8 @@ B = A1 + A2 = [3, 1, 7, 9, 5, 4, 2, 8, 10, 6]
 class Solution {
 private:
 	std::vector<int> solution1(const int N) {
-        /* Time-Complexity:     O( N * lg( N ) ) 
-         * Space-Complexity:    O(      N      )
+        /* Time-Complexity:     O( N ) 
+         * Space-Complexity:    O( N )
          * */
   		std::vector<int> results { 1 };
         
@@ -102,8 +102,59 @@ private:
 
         return results;
 	}
+
+    void recurse2(const int left, const int right, std::vector<int>& S) {
+        if (right - left <= 1) {
+            return;
+        }
+        auto odds = std::vector<int>();
+        auto evens = std::vector<int>();
+        for (int i = left; i <= right; ++i) {
+            if (((i+1) - left) & 1) {
+                odds.push_back(S[i]);
+            } else {
+                evens.push_back(S[i]);
+            }
+        }
+        std::copy(odds.begin(),     odds.end(),     S.begin() + left);
+        std::copy(evens.begin(),    evens.end(),    S.begin() + left + odds.size());
+        
+        const auto mid = left + (right - left)/2;
+        recurse2(left, mid, S);
+        recurse2(mid+1, right, S);
+    }
+
+    std::vector<int> solution2(const int N) {
+        /* Time-Complexity:     O( N*log(N) )
+         * Space-Complexity:    O(    N     )
+         */
+        // Explanation:
+        // We want to produce an arrray 
+        //      A[] = perm({1,...,N}) 
+        // s.t. for all i < k < j, we have 
+        //      2*A[k] != A[i] + A[j]
+        // which is equivalent to
+        //      A[k] - A[i] != A[j] - A[k]
+        // So this tells us that, for all k (where i < k < j), 
+        // the delta between A[k] and A[i] cannot be equal to the delta between A[j] and A[k].
+        // Okay, let 
+        //      di = A[k] - A[i]
+        //      dj = A[j] - A[k]
+        // It would be difficult to compute all possible delta and avoid an EXACT diff.
+        // Instead lets concentrate on the parities of the deltas.
+        // If di is odd and dj is even (or vice-versa) then there is no way for them to ever be equal.
+        // How can we ensure that we build A[] in this manner?
+        // Suppose we let A[] = {1,...,N} (in that exact order).
+        auto S = std::vector<int>(N);
+        for (int i = 0; i < N; ++i) {
+            S[i] = i+1;
+        }
+        recurse2(0, N-1, S);
+
+        return S;
+    }
 public:
     vector<int> beautifulArray(int N) {
-        return solution1( N ); 
+        return solution2( N ); 
     }
 };

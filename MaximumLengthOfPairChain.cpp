@@ -52,7 +52,7 @@ private:
     
 
     int solution2(std::vector<std::vector<int>>& pairs) {
-        /* Time-Complexity:     O(N)
+        /* Time-Complexity:     O(N*log(N))
          * Space-Complexity:    O(1)
          */ 
 
@@ -70,7 +70,7 @@ private:
          * certain.
          * I was returning a[1] <= b[1] and i was getting "dangling references"
          * runtime error on leetcode.
-         * When i changed it to a[1] < b[1], they runtime errors ceased.
+         * When i changed it to a[1] < b[1], the runtime errors ceased.
          */
         // O(N * log(N))
         std::sort(pairs.begin(), pairs.end(),

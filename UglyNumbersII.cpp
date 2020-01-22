@@ -30,7 +30,12 @@ private:
         DP[0] = 1;
         
         for (int i = 1; i < N; ++i) {
-            DP[i] = std::min( std::min( 2 * DP[twos], 3 * DP[threes]) , 5 * DP[fives] );
+            DP[i] = std::min<int>(
+                        {
+                            2 * DP[twos],
+                            3 * DP[threes],
+                            5 * DP[fives]
+                        });
             
             if (DP[i] == 2 * DP[twos]) {
                 ++twos;

@@ -21,35 +21,29 @@ private:
         return std::accumulate( nums.begin(), nums.end(), 0 );
     }
     
-    bool helper(const std::vector<int>& V, const int S, const int i){
-        if (i >= V.size() || S < V[i]) {
-            return false;  
-        } else if (S == V[i]) {
-            return true;
-        } 
-        return helper( V, S-V[i], i+1 ) || helper( V, S, i+1);
-    }
-    
     int ZeroOneKS(const std::vector<int>& V, int W) {
         /* KNAPSACK WITHOUT REPITITION */
         /* Time-Complexity:     O( N*W )
          * Space-Complexity:    O( N*W )
          * */
-        const int N = V.size();
-        if (N == 0) {
+        if (V.empty()) {
             return 0;
         }
+
+        const int N = V.size();
         
         int DP[N][W+1];
         
         for (int w = 0; w <= W; ++w) {
-            DP[0][w] = (w < V[0]) ? 0 : V[0];
+            DP[0][w] =  w < V[0] ? 
+                        0 : 
+                        V[0];
         }
         for (int i = 1; i < N; ++i) {
             for (int w = 0; w <= W; ++w) {
-                DP[i][w] = (w < V[i]) ? 
-                            DP[i-1][w] : 
-                            max(DP[i-1][w], DP[i-1][w-V[i]] + V[i]);
+                DP[i][w] =  w < V[i] ? 
+                            DP[i-1][w] :
+                            std::max( DP[i-1][w], DP[i-1][w-V[i]] + V[i] );
             }
         }
         
@@ -95,17 +89,25 @@ private:
          *              ∑ {c | c € C} == S/2
          * */
         int S = sum(V);
-        return (S & 1) ? false :
-                (ZeroOneKS(V, S/2) == (S/2));
+        return not (S & 1) and ZeroOneKS(V, S/2) == (S/2);
     }
     
+	bool recurse2(const std::vector<int>& V, const int S, const int i) {
+        if (i >= V.size() || S < V[i]) {
+            return false;
+        } else if (S == V[i]) {
+            return true;
+        }
+        return recurse2( V, S-V[i], i+1 ) || recurse2( V, S, i+1);
+    }
+
     bool solution2(std::vector<int>& V) {
         /* EXPLANATION:
          * Make sure to read explanation in solution1.
          * First we ensure that `S` is of even parity.
          * Then, we will search for existence of subset of `V` that sums to `S/2` without leveraging KNAPSACK.
          * Instead we will first sort `V`.
-         * Then, we will look for `S/2` by utilizing `helper()`.
+         * Then, we will look for `S/2` by utilizing `recurse2()`.
          * Notice how it returns false as soon as `S < V[i]`.
          * */
         int S = sum(nums);
@@ -113,7 +115,7 @@ private:
             return false;
         }
         std::sort(V.rbegin(), V.rend());
-        return helper(V, S/2, 0);
+        return recurse2(V, S/2, 0);
     }
     
 public:

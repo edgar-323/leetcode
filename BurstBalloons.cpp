@@ -131,7 +131,7 @@ private:
         */
         // EXPLANATION:
         // Use Dynamic-Programming methodology.
-        // Let left, right € [0, N) be e thmaxe subsequence nums[left:right].
+        // Let left, right € [0, N) be the max subsequence nums[left:right].
         // Then let DP[left][right] denote the maximum burst in subsequence
         // nums[left:right].
         // We want to find DP[0][N-1].
@@ -147,7 +147,7 @@ private:
         for (int len = 1; len <= N; ++len) {
             for (int left = 0, right = len-1; right < N; ++left, ++right) {
                 DP[left][right] = 0;
-                factor = (left > 0 ? nums[left-1] : 1) * (right < N-1 ? nums[right+1] : 1);
+                factor = (left ? nums[left-1] : 1) * (right < N-1 ? nums[right+1] : 1);
                 for (int k = left; k <= right; ++k) {
                     DP[left][right] = std::max(
                                             DP[left][right], 

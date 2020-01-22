@@ -116,7 +116,7 @@ private:
         s2_sum[N] = 0;
         for (int j = N-1; j >= 0; --j) {
             s2_sum[j] = int(s2[j]) + s2_sum[j+1];
-        } 
+        }
     }
 	void sum_destroy() {
 		delete[] s1_sum;

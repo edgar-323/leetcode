@@ -152,8 +152,59 @@ private:
 		return tails.size();
     }
     /******************************************************************/ 
+    int ceil_element(const std::vector<int>& DP, int left, int right, const int key) {
+        while (right - left > 1) {
+            const int mid = left + (right - left) / 2;
+            if (DP[mid] >= key) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+
+        return right;
+    }
+
+    int solution4(const std::vector<int>& A) {
+        /* Time-Complexity:     O(N * log(N))
+         * Space-Complexity:    O(N)
+         */
+        /* Explanation:
+         * See https://algorithmsandme.com/longest-increasing-subsequence-in-onlogn/
+         * 
+         * Note: "Top Candidate of an Active List" is the last element of that list.
+         *
+         * 1. If A[i] is the smallest among all top candidates of active lists, start new active list with A[i] of length 1.
+         * 2. If A[i] is largest among all top candidates of active lists, clone the largest active list, and append A[i] to it.
+         * 3. If A[i] is in between, find a list with largest top element that is smaller than A[i]. Clone and append A[i] to these lists.
+         * 4. Discard all other lists of same length as that of this modified list.
+         *
+         */
+
+        if (A.empty()) {
+            return 0;
+        }
+        const int N = A.size();
+
+        auto DP = std::vector<int>(N, 0);
+        int length = 1;
+
+        DP[0] = A[0];
+        for (int i = 1; i < N; ++i) {
+            if (A[i] < DP[0]) {
+                DP[0] = A[i];
+            } else if (A[i] > DP[length-1]) {
+                DP[length++] = A[i];
+            } else {
+                DP[ceil_element(DP, -1, length-1, A[i])] = A[i];
+            }
+        }
+
+        return length;
+    }
+    /******************************************************************/
 public:
     int lengthOfLIS(vector<int>& nums) {
-        return solution1(nums);
+        return solution4(nums);
     }
 };

@@ -29,11 +29,11 @@ Note: Do not use class member/global/static variables to store states. Your seri
 class Codec {
 private:
     int toDigit(char c) {
-        return (c - '0');
+        return c - '0';
     }
     
-    bool isDigit(char c) {
-        return (c >= '0') && (c <= '9');
+    bool isDigit(const char c) {
+        return '0' <= c and c <= '9'; 
     }
     
     int toInt(std::string& encoded, int& i) {
@@ -51,22 +51,20 @@ private:
         int val = 0;
         for (; i < end; ++i, powTen /= 10) {
             val += toDigit(encoded[i]) * powTen;
-        } 
+        }
         ++i;
         return sign * val;
     }
     
-    void preOrderEncode(TreeNode* node, std::string& encoded) {
+    std::string preOrderEncode(TreeNode* node) { 
         if (node == NULL) {
-            encoded += "$,";
-        } else {
-            encoded += (std::to_string(node->val) + ",");
-            preOrderEncode(node->left, encoded);
-            preOrderEncode(node->right, encoded);
+            return "$,";
         }
+
+        return std::to_string(node->val) + "," + preOrderEncode(node->left) + preOrderEncode(node->right);
     }
     
-    TreeNode* preOrderDecode(std::string encoded, int& i) {
+    TreeNode* preOrderDecode(const std::string& encoded, int& i) {
         if (encoded[i] == '$') {
             i += 2;
             return NULL;
@@ -80,9 +78,7 @@ private:
 public:
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        std::string encoded = "";
-        preOrderEncode(root, encoded);
-        return encoded;
+        return preOrderEncode(root); 
     }
 
     // Decodes your encoded data to tree.

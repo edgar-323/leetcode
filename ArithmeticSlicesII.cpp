@@ -44,7 +44,7 @@ private:
     
   	int n;
     LL ans;
-    void dfs(int depth, std::vector<int>& A, std::vector<LL> cur) {
+    void dfs(int depth, std::vector<int>& A, std::vector<LL>& cur) {
         if (depth == n) {
             if (cur.size() < 3) {
                 return;
@@ -60,6 +60,7 @@ private:
         dfs(depth + 1, A, cur);
         cur.push_back(A[depth]);
         dfs(depth + 1, A, cur);
+        cur.pop_back();
     }
 
     int solution1(std::vector<int>& A) {
@@ -77,10 +78,7 @@ private:
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < i; j++) {
                 LL delta = (LL)A[i] - (LL)A[j];
-                int sum = 0;
-                if (cnt[j].find(delta) != cnt[j].end()) {
-                    sum = cnt[j][delta];
-                }
+                const int sum = cnt[j].count(delta) ? cnt[j][delta] : 0;
                 cnt[i][delta] += sum + 1;
                 ans += sum;
             }

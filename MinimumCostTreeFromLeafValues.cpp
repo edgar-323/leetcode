@@ -146,44 +146,94 @@ private:
         return DP[0][N]; 
     }
 
-    int solution4(const Leafs& leafs) {
+    int solution4(Leafs& leafs) {
         /* Time-Complexity:     O( N^2 )
-         * Space-Complexity:    O(  N  )
+         * Space-Complexity:    O(  1  )
          * */
-
-        int min_inner_node_sum = 0;
-        Leafs A = leafs;
+        // Explanation:
+        // This method "joins the leaves from the bottom-up while keeping track of inner-node
+        // sums along the way".
+        // This solution notices that at any given time in the process, the next best pair of leaves
+        // to join are the ones that produce a minimum product among all adjacent leaf products.
+        // Why is this?
+        // By working through a few examples by hand (and building possible trees along the way), you will
+        // notice that this will maintain minimum values among all inner-nodes.
+        // This strategy has a greedy property, but is in fact correct.
+        int inner_node_sum = 0;
         
         // while inner nodes remain
-        while (A.size() > 1) {
-            const int N         = A.size();
+        while (leafs.size() > 1) {
+            const int N         = leafs.size();
             int min_adj_prod    = INT_MAX;
             int min_index       = -1;
             
             for (int i = 0; i < N-1; ++i) {
-                int curr_adj_prod = A[i] * A[i+1];
+                int curr_adj_prod = leafs[i] * leafs[i+1];
                 if (curr_adj_prod < min_adj_prod) {
                     min_adj_prod    = curr_adj_prod;
-                    min_index       = A[i] < A[i+1] ? i : i+1;
+                    min_index       = leafs[i] < leafs[i+1] ? i : i+1;
                 }
             }
 
-            min_inner_node_sum += min_adj_prod;
-            A.erase( A.begin() + min_index );
+            inner_node_sum += min_adj_prod;
+            leafs.erase( leafs.begin() + min_index );
         }
 
-        return min_inner_node_sum;
+        return inner_node_sum;
     }
 
     int solution5(const Leafs& leafs) {
         /* Time-Complexity:     O( N )
          * Space-Complexity:    O( N )
          * */
+        /*
+			Intuition
+			When we build a node in the tree, we compared the two numbers a and b.
+			In this process,
+			the smaller one is removed and we won't use it anymore,
+			and the bigger one actually stays.
 
-        return -1;
+			The problem can translated as following:
+			Given an array A, choose two neighbors in the array a and b,
+			we can remove the smaller one min(a,b) and the cost is a * b.
+			What is the minimum cost to remove the whole array until only one left?
+
+			To remove a number a, it needs a cost a * b, where b >= a.
+			So a has to be removed by a bigger number.
+			We want minimize this cost, so we need to minimize b.
+
+			b has two candidates, the first bigger number on the left,
+			the first bigger number on the right.
+
+			The cost to remove a is a * min(left, right).
+			With the intuition above in mind,
+			we decompose a hard problem into reasonable easy one:
+			Just find the next greater element in the array, on the left and one right.
+		
+            Refer to the problem (503. Next Greater Element II)
+        */
+        int results = 0;
+
+        auto stack = std::stack<int>();
+
+        for (const auto& leaf : leafs) {
+            while (not stack.empty() and leaf >= stack.top()) {
+                const auto top = stack.top(); stack.pop();
+                results +=  stack.empty() ?
+                            top * leaf :
+                            top * std::min(stack.top(), leaf);
+            }
+            stack.push(leaf);
+        }
+        while (stack.size() > 1) {
+            const auto top = stack.top(); stack.pop();
+            results += top * stack.top();
+        }    
+
+        return results; 
     }
 public:
     int mctFromLeafValues(std::vector<int>& arr) {
- 		return solution4( arr );
+ 		return solution5( arr );
     }
 };
